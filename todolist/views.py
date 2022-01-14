@@ -14,12 +14,11 @@ from .models import User, Task
 #
 # tasks = task.objects.all()
 # done_tasks = tasks.filter(done=True)
-#
 # model mail?
 
 def index(request): #done
 
-    # Authenticated users view their inbox
+    # Authenticated users view their list page
     if request.user.is_authenticated:
         return render(request, "todolist/inbox.html")
 
@@ -86,7 +85,12 @@ def register(request): #done
 
         # Attempt to create new user
         try:
-            user = User.objects.create_user(name, email, email, password)
+            user = User.objects.create_user(
+                name,
+                first_name=name,
+                email=email,
+                password=password,
+            )
             user.save()
         except IntegrityError as e:
             print(e)

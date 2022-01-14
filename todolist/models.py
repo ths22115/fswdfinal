@@ -23,7 +23,7 @@ class Task(models.Model):
         ('M', 'Monthly'),
         ('Y', 'Yearly')
     )
-    creator = models.ForeignKey(User, on_delete=models.CASCADE, related_name="tasks")
+    creator = models.ForeignKey(User, on_delete=models.CASCADE)
     job = models.TextField()
     category = models.CharField(max_length=1, choices=CATAGORIES)
     # startdate = models.DateTimeField(default=timezone.now)
