@@ -34,6 +34,9 @@ class Task(models.Model):
     repeat = models.CharField(max_length=1, choices=REPEATS)
 
     def __str__(self):
-        if (self.repeated != 'N'):
-            return f"{self.title} ({self.get_catagory_display()}, Repeats {self.get_repeated_display()})"
-        return f"{self.title} ({self.get_catagory_display()})"
+        if (self.repeat != 'N'):
+            return f"{self.job} ({self.get_category_display()}, Repeats {self.get_repeat_display()})"
+        return f"{self.job} ({self.get_category_display()})"
+
+    class Meta:
+        ordering = ['done']

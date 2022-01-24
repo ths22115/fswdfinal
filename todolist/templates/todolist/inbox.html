@@ -4,28 +4,50 @@
 {% block body %}
     <h2>Welcome, {{ request.user.first_name }}</h2>
 
-    <button class="btn btn-sm btn-outline-primary" id="list">list</button>
+    <button class="btn btn-sm btn-outline-primary" id="list">List</button>
     <button class="btn btn-sm btn-outline-primary" id="create">Create</button>
-    <button class="btn btn-sm btn-outline-primary" id="done">Done</button>
+<!--    <button class="btn btn-sm btn-outline-primary" id="done">Done</button>-->
     <a class="btn btn-sm btn-outline-primary" href="{% url 'logout' %}">Log Out</a>
-    <div id="list-view">
-        <h4></h4>
-    </div>
+
+    <div id="message-div"></div>
+
+    <div id="list-view"></div>
+
     <div id="create-view">
         <h3>New Task</h3>
         <form id="create-form">
             <div class="form-group">
-                Task: <input class="form-control" id="create-title" placeholder="Title">
+                Creator: <input disabled class="form-control" value="{{ request.user.username }}">
+            </div>
+            <div class="form-group">
+                Task: <input class="form-control" id="create-job" placeholder="Job">
             </div>
             <div class="form-group">
                 Category: <select name="category" id="create-category" class="form-control">
-                    <option value="volvo">Volvo</option>
-                    <option value="saab">Saab</option>
-                    <option value="mercedes">Mercedes</option>
-                    <option value="audi">Audi</option>
+                    <option value="A">Assignment</option>
+                    <option value="C">Chore</option>
+                    <option value="G">Goal</option>
+                    <option value="C">Self Care</option>
+                    <option value="W">Work</option>
+                    <option value="P">People</option>
                 </select>
             </div>
-            <textarea class="form-control" id="create-body" placeholder="Body"></textarea>
+            <div class="form-group">
+                Repeats... <select name="repeat" id="create-repeat" class="form-control">
+                ('N', 'Never'),
+                ('H', 'Hourly'),
+                ('D', 'Daily'),
+                ('W', 'Weekly'),
+                ('M', 'Monthly'),
+                ('Y', 'Yearly')
+                <option value="N">Never</option>
+                <option value="H">Hourly</option>
+                <option value="D">Daily</option>
+                <option value="W">Weekly</option>
+                <option value="M">Monthly</option>
+                <option value="Y">Yearly</option>
+            </select>
+            </div>
             <input type="submit" class="btn btn-primary"/>
         </form>
     </div>

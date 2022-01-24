@@ -26,23 +26,50 @@ def index(request): #done
     else:
         return HttpResponseRedirect(reverse("login"))
 
+@csrf_exempt
+@login_required
+def create(request):
+    if request.method != "POST":
+        return JsonResponse({"error": "POST request required."}, status=400)
+
+
+    data = json.loads(request.body)
+    category = data.get("category", "")
+    job = data.get("job", "")
+    done = data.get("done", "")
+    repeat = data.get("repeat", "")
+
+    # Create one email for each recipient, plus sender
+    creator = set()
+    creator.add(request.user)
+    creator.update(creator)
+    task = Task(
+            creator=request.user,
+            category=category,
+            job=job,
+            done=done,
+            repeat=repeat,
+        )
+    task.save()
+    return JsonResponse({"message": "Task created."}, status=201)
+
 
 @login_required
 def page(request, page): #done
-    # Filter tasks returned based on page
+
     if page == "list":
         tasks = Task.objects.filter(
-            user=request.user, done=False
+            creator=request.user, done=False
         )
-    elif page == "finished":
+    elif page == "done":
         tasks = Task.objects.filter(
-            user=request.user, done=True
+            creator=request.user, done=True
         )
     else:
-        return JsonResponse({"error": "Invalid mailbox."}, status=400)
+        return JsonResponse({"error": "Invalid page."}, status=400)
 
     # Return emails in reverse chronologial order
-    tasks = tasks.order_by("timestamp").all()
+    tasks = tasks.order_by("done").all()
     return JsonResponse([task.serialize() for task in tasks], safe=False)
 
 def login_view(request): #done
@@ -86,9 +113,9 @@ def register(request): #done
         # Attempt to create new user
         try:
             user = User.objects.create_user(
-                name,
-                first_name=name,
-                email=email,
+                email,
+                first_name=name.split(" ")[0],
+                last_name=name.split(" ")[-1],
                 password=password,
             )
             user.save()

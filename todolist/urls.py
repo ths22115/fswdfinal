@@ -1,5 +1,4 @@
 from django.urls import path
-
 from . import views
 
 urlpatterns = [
@@ -9,7 +8,7 @@ urlpatterns = [
     path("register", views.register, name="register"),
 
     # API Routes
-    # path("emails", views.compose, name="compose"),
-    # path("emails/<int:email_id>", views.email, name="email"),
-    path("emails/<str:page>", views.page, name="page"),
+    path("tasks", views.create, name="create"),
+    # path("tasks/<int:task_id>", views.email, name="email"),
+    path("tasks/<str:page>", views.page, name="page"),
     ]
